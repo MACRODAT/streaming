@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StreamBundle — Ultimate Streaming Deal</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #E50914;
+    --red-dark: #b0060f;
+    --red-glow: rgba(229,9,20,0.4);
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface2: #1c1c1c;
+    --border: rgba(255,255,255,0.08);
+    --text: #ffffff;
+    --muted: #a3a3a3;
+    --green: #25D366;
+    --green-dark: #1aab52;
+    --gold: #f5c518;
+  }
+
+  /* ── 1/ SLIDESHOW SNAP SCROLLING ────────────────── */
+  html { 
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
+
+  section, .hero-section {
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport for mobile browsers */
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── NAV & LOGO ANIMATION ───────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+    padding: 15px 25px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  
+  /* 5/ StreamBundle Logo Periodic Animation */
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.04em;
+    color: var(--red);
+    text-shadow: 0 0 20px var(--red-glow);
+    animation: logo-pulse 4s infinite ease-in-out;
+  }
+  .nav-logo span { color: #fff; }
+
+  @keyframes logo-pulse {
+    0%, 90%, 100% { transform: scale(1); filter: brightness(1); }
+    95% { transform: scale(1.05); filter: brightness(1.3); text-shadow: 0 0 30px var(--red); }
+  }
+
+  .nav-cta {
+    background: var(--red); color: #fff; border: none; cursor: pointer;
+    padding: 8px 18px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;
+    text-decoration: none; transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--red-dark); }
+
+  /* ── HERO / MAIN OFFER ─────────────────────────── */
+  .hero-section {
+    background: radial-gradient(circle at 50% 30%, rgba(229,9,20,0.15) 0%, transparent 70%), #0a0a0a;
+  }
+  .hero-badge {
+    display: inline-block; background: rgba(229,9,20,0.2); border: 1px solid var(--red);
+    color: #ff6b6b; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em;
+    padding: 4px 12px; border-radius: 100px; margin-bottom: 12px;
+  }
+  .hero-section h1 {
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.2rem, 7vw, 4rem);
+    line-height: 1.05; text-align: center; margin-bottom: 8px;
+  }
+  .hero-section h1 em { font-style: normal; color: var(--red); }
+  .hero-sub { font-size: 0.9rem; color: var(--muted); max-width: 450px; text-align: center; margin-bottom: 20px; }
+
+  /* ── 4/ TRIANGLE CANVAS CONTAINER ──────────────── */
+  .bundle-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 100%; max-width: 420px;
+    padding: 24px; position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  
+  .canvas-wrapper {
+    position: relative;
+    width: 100%; height: 140px;
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .bg-canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1;
+  }
+  
+  /* 2/ Brand Logos Overlay on Canvas */
+  .logos-overlay {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 0 10px;
+  }
+  .logo-img-wrapper {
+    width: 55px; height: 55px; display: flex; align-items: center; justify-content: center;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+  }
+  .logo-img-wrapper svg {
+    width: 100%; height: auto; max-height: 100%; object-fit: contain;
+  }
+  .logo-plus {
+    font-size: 1.5rem; font-weight: 300; color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  }
+
+  /* ── 3/ PRICE TOGGLE & UPSELL MECHANICS ───────── */
+  .price-selector {
+    display: flex; background: var(--surface2); border-radius: 8px; padding: 4px; border: 1px solid var(--border);
+  }
+  .price-option {
+    flex: 1; text-align: center; padding: 8px; border-radius: 6px; font-size: 0.85rem;
+    font-weight: 700; color: var(--muted); cursor: pointer; transition: all 0.2s;
+    position: relative;
+  }
+  .price-option.active {
+    background: var(--red); color: #fff;
+  }
+  .upsell-badge {
+    position: absolute; top: -12px; right: 4px; background: #fff; color: var(--red);
+    font-size: 0.6rem; padding: 1px 6px; border-radius: 4px; font-weight: 800;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3); animation: bounce 2s infinite;
+  }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+  .price-display { text-align: center; }
+  .price-display .was { font-size: 0.8rem; color: var(--muted); text-decoration: line-through; }
+  .price-display .main { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; line-height: 1; margin: 4px 0; }
+  .price-display .save { color: #6be06b; font-size: 0.8rem; font-weight: 700; }
+
+  /* BUTTONS */
+  .actions-row { display: flex; gap: 10px; width: 100%; }
+  .btn {
+    flex: 1; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+    text-decoration: none; border: none; font-family: inherit; transition: opacity 0.2s;
+  }
+  .btn:active { opacity: 0.8; }
+  .btn-red { background: var(--red); color: #fff; }
+  .btn-green { background: var(--green); color: #fff; }
+  .btn-outline { background: transparent; color: #ff6b6b; border: 1px solid rgba(229,9,20,0.4); }
+  .btn-outline:hover { background: rgba(229,9,20,0.05); }
+
+  /* ── TESTIMONIALS SLIDE ────────────────────────── */
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; margin-bottom: 20px; text-align: center; }
+  .testi-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 12px; }
+  .testi-item { background: var(--surface); padding: 16px; border-radius: 12px; border: 1px solid var(--border); }
+  .testi-stars { color: var(--gold); font-size: 0.8rem; margin-bottom: 4px; }
+  .testi-quote { font-size: 0.85rem; color: #dedede; font-style: italic; }
+  .testi-user { font-size: 0.75rem; color: var(--muted); margin-top: 6px; font-weight: 700; }
+
+  /* ── OTHER OFFERS SLIDE ────────────────────────── */
+  .offers-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; }
+  .mini-card { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .mini-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.02em; }
+  .mini-card p { font-size: 0.8rem; color: var(--muted); }
+
+  /* ── CUSTOM BUILDER SLIDE ──────────────────────── */
+  .builder-card { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); width: 100%; max-width: 420px; padding: 20px; }
+  .grid-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .check-btn {
+    background: var(--surface2); border: 1px solid var(--border); padding: 10px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none;
+  }
+  .check-btn.selected { border-color: var(--red); background: rgba(229,9,20,0.1); }
+  .check-btn span { font-size: 0.85rem; font-weight: 500; }
+  .check-btn .indicator { width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--muted); display:flex; align-items:center; justify-content:center; font-size:0.6rem; }
+  .check-btn.selected .indicator { background: var(--red); border-color: var(--red); color: #fff; }
+  
+  .dur-row { display: flex; gap: 4px; margin-bottom: 16px; }
+  .dur-chip { flex: 1; text-align: center; background: var(--surface2); padding: 6px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; color: var(--muted); }
+  .dur-chip.active { background: #fff; color: #000; font-weight: 700; }
+  
+  .summary-text { text-align: center; font-size: 0.85rem; margin-bottom: 12px; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 6px; }
+
+  /* ── 6/ INTERSTITIAL HELP POPUP ────────────────── */
+  .help-popup {
+    position: fixed; bottom: -100px; left: 20px; right: 20px; z-index: 1000;
+    background: #1c1c1c; border: 1px solid var(--green); border-radius: 12px;
+    padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .help-popup.show { transform: translateY(-120px); }
+  .help-popup p { font-size: 0.85rem; font-weight: 500; }
+  .help-close { background: transparent; border: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; }
+
+  /* UTILS */
+  .accent-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--red); letter-spacing: 0.1em; margin-bottom: 4px; }
+  svg { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Stream<span>Bundle</span></div>
+  <a href="#main-offer" class="nav-cta" onclick="document.getElementById('main-offer').scrollIntoView(); return false;">Get Deal →</a>
+</nav>
+
+<section id="main-offer" class="hero-section">
+  <div class="hero-badge">🔥 Flash Offer — Limited Access</div>
+  <h1>Stream <em>Everything.</em><br>Pay Next to Nothing.</h1>
+  <p class="hero-sub">The ultimate premium streaming alliance. Fully activated. No contracts.</p>
+
+  <div class="bundle-card">
+    <div class="canvas-wrapper">
+      <canvas id="mainCanvas" class="bg-canvas" data-colors="#E50914,#0057b7,#00c8ff,#ff5a00"></canvas>
+      <div class="logos-overlay">
+        <div class="logo-img-wrapper">
+          <svg viewBox="0 0 100 35"><path d="M10.5 0h13.2v35h-4.4V4.7L10.5 35H6.1V0h4.4v30.3z" fill="#E50914"/></svg>
+        </div>
+        <div class="logo-plus">+</div>
+        <div class="logo-img-wrapper">
+          <svg viewBox="0 0 100 40"><path d="M50 0C22.4 0 0 17.9 0 40h15c0-13.8 15.7-25 35-25s35 11.2 35 25h15C100 17.9 77.6 0 50 0z" fill="#0057b7"/></svg>
+        </div>
+        <div class="logo-plus">+</div>
+        <div class="logo-img-wrapper">
+          <svg viewBox="0 0 100 40"><text x="0" y="32" font-family="'Bebas Neue',sans-serif" font-size="38" fill="#00c8ff" font-weight="bold">FUBO</text></svg>
+        </div>
+        <div class="logo-plus">+</div>
+        <div class="logo-img-wrapper">
+          <svg viewBox="0 0 100 40"><text x="0" y="32" font-family="'Bebas Neue',sans-serif" font-size="42" fill="#fff" font-style="italic" font-weight="bold">ViX</text></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-selector">
+      <div class="price-option" id="opt-6m" onclick="setMainPeriod(6)">6 Months</div>
+      <div class="price-option active" id="opt-12m" onclick="setMainPeriod(12)">
+        1 Year
+        <div class="upsell-badge">BEST VALUE (-50%)</div>
+      </div>
+    </div>
+
+    <div class="price-display">
+      <div class="was" id="main-was">Retail value: ~$780/year</div>
+      <div class="main" id="main-price">$40<sub>/year</sub></div>
+      <div class="save" id="main-save">Save over $740 instantly</div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-red" onclick="alert('Proceeding to Instant Secured Order Activation Flow!')">⚡ Buy Now</button>
+      <a id="main-wa-link" href="https://wa.me/1234567890?text=I%20want%20the%20Ultimate%201%20Year%20Bundle%20for%20%2440" class="btn btn-green" target="_blank">
+        <span style="font-size:1.1rem">💬</span> WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials">
+  <div class="accent-label">Verified Experience</div>
+  <h2 class="section-title">500+ Viewers Switched</h2>
+  
+  <div class="testi-container">
+    <div class="testi-item">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"Cut my high cable cost immediately. Activated everything through WhatsApp within 10 minutes. Absolute game changer."</p>
+      <div class="testi-user">Devon P. — Miami, FL</div>
+    </div>
+    <div class="testi-item">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"Skeptical about the $40 deal at first, but everything runs perfectly fine on my AppleTV. Highly recommended."</p>
+      <div class="testi-user">Marcus K. — Houston, TX</div>
+    </div>
+    <div class="testi-item">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"Live sports and movies work perfectly. The service team answered my setup questions instantly."</p>
+      <div class="testi-user">Elena R. — Los Angeles, CA</div>
+    </div>
+  </div>
+</section>
+
+<section id="other-offers">
+  <div class="accent-label">Alternative Choices</div>
+  <h2 class="section-title">More Tailored Packs</h2>
+
+  <div class="offers-container">
+    <div class="mini-card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>The Binge Pack</h3>
+        <span style="font-family:'Bebas Neue'; font-size:1.5rem; color:#fff;">$25/yr</span>
+      </div>
+      <div class="canvas-wrapper" style="height:60px;">
+        <canvas id="canvasBinge" class="bg-canvas" data-colors="#E50914,#00c8ff,#ffffff"></canvas>
+        <div class="logos-overlay">
+          <span style="font-family:'Bebas Neue'; font-size:1rem;">NETFLIX</span>
+          <span>+</span>
+          <span style="font-family:'Bebas Neue'; font-size:1rem; color:#00c8ff;">FUBO</span>
+          <span>+</span>
+          <span style="font-family:'Bebas Neue'; font-size:1rem; font-style:italic;">ViX</span>
+        </div>
+      </div>
+      <p>Premium movies, episodic on-demand series, and cinematic reality viewing options.</p>
+      <button class="btn btn-outline" onclick="location.href='https://wa.me/1234567890?text=Interested%20in%20Binge%20Pack'">Order Binge Pack</button>
+    </div>
+
+    <div class="mini-card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>The Starter Pack</h3>
+        <span style="font-family:'Bebas Neue'; font-size:1.5rem; color:#fff;">$15/yr</span>
+      </div>
+      <div class="canvas-wrapper" style="height:60px;">
+        <canvas id="canvasStarter" class="bg-canvas" data-colors="#E50914,#ffffff"></canvas>
+        <div class="logos-overlay">
+          <span style="font-family:'Bebas Neue'; font-size:1rem;">NETFLIX</span>
+          <span>+</span>
+          <span style="font-family:'Bebas Neue'; font-size:1rem; font-style:italic;">ViX</span>
+        </div>
+      </div>
+      <p>Essential access points covering core movies and global native telenovela programming.</p>
+      <button class="btn btn-outline" onclick="location.href='https://wa.me/1234567890?text=Interested%20in%20Starter%20Pack'">Order Starter Pack</button>
+    </div>
+  </div>
+</section>
+
+<section id="custom-builder">
+  <div class="accent-label">Precision Control</div>
+  <h2 class="section-title">Design Your Experience</h2>
+
+  <div class="builder-card">
+    <div class="accent-label" style="color:var(--muted)">1. Pick Platform Components</div>
+    <div class="grid-checks">
+      <div class="check-btn selected" data-svc="Netflix" data-price="12" onclick="toggleCustomSvc(this)">
+        <span>Netflix</span><div class="indicator">✓</div>
+      </div>
+      <div class="check-btn" data-svc="DirecTV" data-price="10" onclick="toggleCustomSvc(this)">
+        <span>DirecTV</span><div class="indicator">✓</div>
+      </div>
+      <div class="check-btn" data-svc="Fubo TV" data-price="8" onclick="toggleCustomSvc(this)">
+        <span>Fubo TV</span><div class="indicator">✓</div>
+      </div>
+      <div class="check-btn" data-svc="ViX" data-price="5" onclick="toggleCustomSvc(this)">
+        <span>ViX</span><div class="indicator">✓</div>
+      </div>
+    </div>
+
+    <div class="accent-label" style="color:var(--muted)">2. Operational Lifespan</div>
+    <div class="dur-row">
+      <div class="dur-chip active" data-months="1" onclick="setCustomDuration(this)">1 Mo</div>
+      <div class="dur-chip" data-months="3" onclick="setCustomDuration(this)">3 Mo</div>
+      <div class="dur-chip" data-months="6" onclick="setCustomDuration(this)">6 Mo</div>
+      <div class="dur-chip" data-months="12" onclick="setCustomDuration(this)">1 Yr</div>
+    </div>
+
+    <div class="summary-text" id="custom-summary-box">
+      Selected: Netflix <br>
+      <strong>Total Estimate: $9.60</strong>
+    </div>
+
+    <button class="btn btn-green" id="custom-wa-btn" style="width:100%" onclick="sendCustomOrder()">
+      🚀 Send Custom Configuration
+    </button>
+  </div>
+</section>
+
+<div class="help-popup" id="retentionPopup">
+  <div>
+    <p>👋 Need assistance configuring setup?</p>
+    <span style="font-size: 0.75rem; color: var(--green);">Our support team is active right now.</span>
+  </div>
+  <div style="display:flex; align-items:center; gap:8px;">
+    <a href="https://wa.me/1234567890?text=Hi%20I%27m%20on%20your%20site%20and%20need%20help%20choosing%20a%20bundle." target="_blank" class="btn btn-green" style="padding:8px 12px; font-size:0.75rem;">Chat Now</a>
+    <button class="help-close" onclick="closeRetentionPopup()">×</button>
+  </div>
+</div>
+
+<script>
+  // ── RENDER CARD CANVAS GEOMETRIES (TRIANGLES / POLYGONS) ──
+  function drawCardCanvas(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const colors = canvas.dataset.colors.split(',');
+    
+    // Set internal resolution match
+    const w = canvas.width = canvas.offsetWidth * 2;
+    const h = canvas.height = canvas.offsetHeight * 2;
+    
+    const totalItems = colors.length;
+    
+    ctx.clearRect(0, 0, w, h);
+    
+    if (totalItems === 4) {
+      // Top Triangle
+      ctx.fillStyle = colors[0]; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(w,0); ctx.lineTo(w/2,h/2); ctx.fill();
+      // Right Triangle
+      ctx.fillStyle = colors[1]; ctx.beginPath(); ctx.moveTo(w,0); ctx.lineTo(w,h); ctx.lineTo(w/2,h/2); ctx.fill();
+      // Bottom Triangle
+      ctx.fillStyle = colors[2]; ctx.beginPath(); ctx.moveTo(w,h); ctx.lineTo(0,h); ctx.lineTo(w/2,h/2); ctx.fill();
+      // Left Triangle
+      ctx.fillStyle = colors[3]; ctx.beginPath(); ctx.moveTo(0,h); ctx.lineTo(0,0); ctx.lineTo(w/2,h/2); ctx.fill();
+    } else if (totalItems === 3) {
+      // 3 vertical diagonal cut panels
+      ctx.fillStyle = colors[0]; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(w*0.4,0); ctx.lineTo(w*0.2,h); ctx.lineTo(0,h); ctx.fill();
+      ctx.fillStyle = colors[1]; ctx.beginPath(); ctx.moveTo(w*0.4,0); ctx.lineTo(w*0.8,0); ctx.lineTo(w*0.6,h); ctx.lineTo(w*0.2,h); ctx.fill();
+      ctx.fillStyle = colors[2]; ctx.beginPath(); ctx.moveTo(w*0.8,0); ctx.lineTo(w,0); ctx.lineTo(w,h); ctx.lineTo(w*0.6,h); ctx.fill();
+    } else if (totalItems === 2) {
+      // Clean split angle cut rectangle
+      ctx.fillStyle = colors[0]; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(w*0.6,0); ctx.lineTo(w*0.4,h); ctx.lineTo(0,h); ctx.fill();
+      ctx.fillStyle = colors[1]; ctx.beginPath(); ctx.moveTo(w*0.6,0); ctx.lineTo(w,0); ctx.lineTo(w,h); ctx.lineTo(w*0.4,h); ctx.fill();
+    }
+    
+    // Overlay cinematic darkening mask over pure asset lines
+    ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+    ctx.fillRect(0, 0, w, h);
+  }
+
+  // Initialize Canvas layouts
+  window.addEventListener('DOMContentLoaded', () => {
+    ['mainCanvas', 'canvasBinge', 'canvasStarter'].forEach(id => drawCardCanvas(id));
+  });
+
+  // ── MAIN PACK UPSELL LOGIC MECHANICS ──
+  let mainPeriod = 12;
+  function setMainPeriod(months) {
+    mainPeriod = months;
+    const p6 = document.getElementById('opt-6m');
+    const p12 = document.getElementById('opt-12m');
+    const displayPrice = document.getElementById('main-price');
+    const displayWas = document.getElementById('main-was');
+    const displaySave = document.getElementById('main-save');
+    const waLink = document.getElementById('main-wa-link');
+
+    if(months === 6) {
+      p6.classList.add('active'); p12.classList.remove('active');
+      displayPrice.innerHTML = "<sup>$</sup>28<sub>/6 mo</sub>";
+      displayWas.innerText = "Retail value: ~$390 / Period";
+      displaySave.innerText = "Save over $360 right now";
+      waLink.href = "https://wa.me/1234567890?text=I%20want%20the%20Ultimate%206%20Months%20Bundle%20for%20%2428";
+    } else {
+      p12.classList.add('active'); p6.classList.remove('active');
+      displayPrice.innerHTML = "<sup>$</sup>40<sub>/year</sub>";
+      displayWas.innerText = "Retail value: ~$780/year";
+      displaySave.innerText = "Save over $740 instantly";
+      waLink.href = "https://wa.me/1234567890?text=I%20want%20the%20Ultimate%201%20Year%20Bundle%20for%20%2440";
+    }
+  }
+
+  // ── CUSTOM INTERACTIVE ENGINE BUILDER ──
+  let customDuration = 1;
+  const MULTIPLIER_MATRIX = { 1: 0.80, 3: 0.75, 6: 0.70, 12: 0.60 };
+
+  function toggleCustomSvc(element) {
+    element.classList.toggle('selected');
+    calculateCustomSummary();
+  }
+
+  function setCustomDuration(element) {
+    document.querySelectorAll('.dur-chip').forEach(c => c.classList.remove('active'));
+    element.classList.add('active');
+    customDuration = parseInt(element.dataset.months);
+    calculateCustomSummary();
+  }
+
+  function calculateCustomSummary() {
+    const selectedElements = document.querySelectorAll('.check-btn.selected');
+    const box = document.getElementById('custom-summary-box');
+    
+    if(selectedElements.length === 0) {
+      box.innerHTML = "Select at least 1 service item panel.";
+      return;
+    }
+    
+    let listNames = [];
+    let cumulativeBase = 0;
+    
+    selectedElements.forEach(el => {
+      listNames.push(el.dataset.svc);
+      cumulativeBase += parseFloat(el.dataset.price);
+    });
+    
+    const factor = MULTIPLIER_MATRIX[customDuration];
+    const totalEstimate = (cumulativeBase * customDuration * factor).toFixed(2);
+    
+    let spanLabel = customDuration === 12 ? "1 Year" : `${customDuration} Month(s)`;
+    box.innerHTML = `${listNames.join(' + ')} (${spanLabel})<br><strong>Total Estimate: $${totalEstimate}</strong>`;
+  }
+
+  function sendCustomOrder() {
+    const selectedElements = document.querySelectorAll('.check-btn.selected');
+    if(selectedElements.length === 0) { return alert('Select services first.'); }
+    
+    let listNames = [];
+    selectedElements.forEach(el => listNames.push(el.dataset.svc));
+    
+    const msg = encodeURIComponent(`Hi! Custom package design target configuration setup confirmation request:\nServices: ${listNames.join(' + ')}\nPeriod: ${customDuration} months.`);
+    window.open(`https://wa.me/1234567890?text=${msg}`, '_blank');
+  }
+
+  // ── RETENTION TIMEOUT POPUP INTERSTITIAL TRIGGER ──
+  let idleTimer = setTimeout(showRetentionPopup, 12000); // 12-second threshold window
+
+  function showRetentionPopup() {
+    document.getElementById('retentionPopup').classList.add('show');
+  }
+  function closeRetentionPopup() {
+    document.getElementById('retentionPopup').classList.remove('show');
+  }
+
+  // Tracking clear indicators if user actively explores components to delay intrusion windows
+  function resetIdlePattern() {
+    clearTimeout(idleTimer);
+    // Restart only if it hasn't popped up yet
+    if(!document.getElementById('retentionPopup').classList.contains('show')) {
+      idleTimer = setTimeout(showRetentionPopup, 20000);
+    }
+  }
+  window.addEventListener('scroll', resetIdlePattern);
+  window.addEventListener('click', resetIdlePattern);
+</script>
+</body>
+</html>
