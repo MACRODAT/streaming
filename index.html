@@ -21,10 +21,12 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .slide { width: 100vw; height: 100vh; flex-shrink: 0; overflow: hidden; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
 /* NAV */
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 150; background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, transparent 100%); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
-.nav-logo { font-family: "Bebas Neue", sans-serif; font-size: 1.9rem; letter-spacing: 0.04em; color: var(--red); cursor: pointer; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 150; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(to bottom, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.4) 60%, transparent 100%); backdrop-filter: blur(8px); }
+nav::before { content: ""; position: absolute; top: 0; left: 20%; width: 60%; height: 100%; background: radial-gradient(ellipse at top, rgba(229,9,20,0.4), transparent 70%); animation: spotlight 6s infinite alternate; pointer-events: none; }
+@keyframes spotlight { 0% { opacity: 0.4; background: radial-gradient(ellipse at top, rgba(229,9,20,0.4), transparent 70%); } 50% { opacity: 0.8; background: radial-gradient(ellipse at top, rgba(255,87,34,0.4), transparent 70%); } 100% { opacity: 0.4; background: radial-gradient(ellipse at top, rgba(229,9,20,0.4), transparent 70%); } }
+.nav-logo { font-family: "Bebas Neue", sans-serif; font-size: 1.9rem; letter-spacing: 0.04em; color: var(--red); cursor: pointer; position: relative; z-index: 1; }
 .nav-logo span { color: #fff; }
-.nav-cta { background: var(--red); color: #fff; text-decoration: none; padding: 8px 20px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; transition: background 0.2s; }
+.nav-cta { background: var(--red); color: #fff; text-decoration: none; padding: 8px 20px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; transition: background 0.2s; position: relative; z-index: 1; }
 .nav-cta:hover { background: var(--red-dark); }
 
 /* DOTS */
@@ -75,9 +77,11 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 150; background: line
 .testi-author { font-weight: 600; font-size: 0.85rem; color: #fff; }
 
 /* SLIDE 3 OTHER BUNDLES */
-#slide-offers { background: var(--bg); padding: 80px 20px 40px; overflow-y: auto; }
-.offers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-.other-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; position: relative; display: flex; flex-direction: column; height: 320px; }
+#slide-offers { background: var(--bg); padding: 80px 20px 40px; overflow: hidden; }
+#slide-offers .slide-content { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.offers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; min-height: 0; padding-bottom: 20px; align-items: stretch; }
+.other-card { height: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+.other-card.custom-card { grid-column: 1 / -1; justify-self: center; align-self: center; height: 85%; width: 65%; }
 .other-card-mosaic-wrap { position: relative; width: 100%; height: 100%; }
 .other-card-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .other-card-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 18px 18px; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%); border-top: none; }
@@ -102,8 +106,8 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 150; background: line
 .svc-item:hover { border-color: rgba(255,255,255,0.2); }
 .svc-item.selected { border-color: var(--red); background: rgba(229,9,20,0.08); }
 .svc-left { display: flex; align-items: center; gap: 12px; }
-.svc-logo { width: 38px; height: 38px; border-radius: 6px; overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); }
-.svc-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.svc-logo { height: 38px; border-radius: 6px; overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; padding: 2px 6px; background: rgba(0,0,0,0.3); }
+.svc-logo img { width: auto; height: 100%; object-fit: contain; display: block; max-width: 60px; }
 .check-box { width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--muted); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .selected .check-box { background: var(--red); border-color: var(--red); }
 .check-box::after { content: "✓"; color: #fff; font-size: 11px; display: none; font-weight: 800; }
@@ -147,10 +151,34 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 150; background: line
 .modal-close:hover { color: #fff; }
 .modal-success-msg { color: var(--green); font-size: 0.85rem; font-weight: 700; margin-top: 4px; }
 
+@keyframes popIn { 0% { transform: scale(0.9); opacity: 0.5; } 50% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+.price-pop { animation: popIn 0.4s ease-out; }
+.svc-price { transition: color 0.3s; }
+.overlay-page { position: fixed; top: 100vh; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at top right, rgba(229,9,20,0.15) 0%, rgba(10,10,10,0.85) 60%); backdrop-filter: blur(12px); z-index: 300; transition: top 0.6s cubic-bezier(0.77,0,0.175,1); overflow-y: auto; padding: 80px 20px 40px; display: flex; flex-direction: column; align-items: center; }
+.overlay-page.open { top: 0; }
+.close-builder { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.1); border: none; color: #fff; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 310; transition: background 0.2s; }
+.close-builder:hover { background: var(--red); }
+.combo-banner { position: absolute; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(0,0,0,0.85); border: 1px solid var(--red); padding: 12px 20px; border-radius: 12px; display: flex; align-items: center; gap: 16px; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 320; box-shadow: 0 10px 30px rgba(229,9,20,0.3); }
+.combo-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+.combo-trailer { width: 90px; height: 50px; background: #000; border-radius: 6px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.2); }
+.combo-trailer::after { content: "▶"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.9); font-size: 1.2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+.combo-trailer img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+.combo-info { font-family: "Bebas Neue", sans-serif; font-size: 1.4rem; color: #fff; letter-spacing: 0.05em; line-height: 1.1; }
+.combo-info span { color: var(--gold); display: block; font-family: "DM Sans"; font-size: 0.75rem; letter-spacing: 0; font-weight: 700; text-transform: uppercase; }
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .builder-wrap { grid-template-columns: 1fr; padding: 20px; gap: 24px; }
   .hero h1 { font-size: 3rem; }
+  .offers-grid { grid-template-columns: 1fr; gap: 10px; }
+  .other-card.custom-card { grid-column: 1 / -1; width: 100%; height: 100%; }
+  .other-card .bundle-title { font-size: 1.3rem; }
+  .other-card .bundle-desc { display: none; }
+  .other-card .other-price { font-size: 1.4rem; margin-bottom: 4px; }
+  .other-card .btn-outline { padding: 8px; font-size: 0.85rem; }
+  .other-card-overlay { padding: 8px 12px 12px; }
+  .banner-top-bar { padding: 8px 12px; }
+  .overlay-logos img { height: 20px; }
   nav { padding: 12px 20px; }
 }
 </style>
@@ -175,14 +203,13 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 150; background: line
 
 <nav>
   <div class="nav-logo" onclick="goToSlide(0)">Stream<span>Bundle</span></div>
-  <a href="#" class="nav-cta" onclick="goToSlide(3); return false;">Build Your Bundle</a>
+  <a href="#" class="nav-cta" onclick="openBuilder(); return false;">Build Your Bundle</a>
 </nav>
 
 <div id="dot-nav">
   <div class="dot active" onclick="goToSlide(0)"></div>
   <div class="dot" onclick="goToSlide(1)"></div>
   <div class="dot" onclick="goToSlide(2)"></div>
-  <div class="dot" onclick="goToSlide(3)"></div>
 </div>
 
 <div id="slides-wrap">
@@ -205,7 +232,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 150; background: line
               <div class="price-main" style="margin-bottom:0; margin-top:4px;"><sup>$</sup><span id="hero-price-num">62</span><sub>/year</sub></div>
               <div style="font-size:0.8rem; color:rgba(255,255,255,0.55); margin-top:-6px; letter-spacing:0.04em;">⭐ $59 for previous customers</div>
               <div class="cta-row" style="margin-top:4px;">
-                <a href="https://wa.me/1234567890?text=Hi!%20I%20want%20the%20Ultimate%20Bundle%20(Netflix%2BDirecTV%2BFubo%2BViX)%20for%20%2462%2Fyear." class="btn-wa" id="hero-wa-btn" target="_blank">
+                <a href="https://wa.me/212698179490?text=Hi!%20I%20want%20the%20Ultimate%20Bundle%20(Netflix%2BDirecTV%2BFubo%2BViX)%20for%20%2462%2Fyear." class="btn-wa" id="hero-wa-btn" target="_blank">
                   <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                   Get Instant Access
                 </a>
@@ -214,10 +241,24 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 150; background: line
           </div>
         </div>
       </div>
-      <div class="slide-arrow" onclick="goToSlide(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>More Options</div>
+      <div class="slide-arrow" onclick="goToSlide(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>See Reviews</div>
     </div>
 
-    <!-- SLIDE 2: OTHER BUNDLES -->
+    <!-- SLIDE 2: TESTIMONIALS -->
+    <div class="slide" id="slide-testi">
+      <div class="slide-content">
+        <div class="section-label">Proven Setup</div>
+        <div class="section-title">Verified Buyers</div>
+        <div class="testi-grid">
+          <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">"Cancelled my $120 cable bill instantly. Set up took 5 mins via WhatsApp. Perfect stream quality on DirecTV."</p><div class="testi-author">M. Rodriguez, FL</div></div>
+          <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">"Skeptical at first, but the $62/year bundle works flawlessly. ViX and Fubo are loaded."</p><div class="testi-author">Tyler K., TX</div></div>
+          <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">"Bought this for my parents. The UI is simple, and support walked them right through it."</p><div class="testi-author">Daniel J., IL</div></div>
+        </div>
+      </div>
+      <div class="slide-arrow" onclick="goToSlide(2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>More Options</div>
+    </div>
+
+    <!-- SLIDE 3: OTHER BUNDLES -->
     <div class="slide" id="slide-offers">
       <div class="slide-content">
         <div class="section-label">Quick Picks</div>
@@ -237,7 +278,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 150; background: line
                   <img src="assets/fubo_tv_logo.png" alt="Fubo TV">
                 </div>
                 <div class="other-price">$80 <span>/ year</span></div>
-                <a href="https://wa.me/1234567890?text=Hi!%20I%20want%20the%20Sports%20Junkie%20bundle." class="btn-outline" target="_blank">Order via WhatsApp</a>
+                <a href="https://wa.me/212698179490?text=Hi!%20I%20want%20the%20Sports%20Junkie%20bundle." class="btn-outline" target="_blank">Order via WhatsApp</a>
               </div>
             </div>
           </div>
@@ -255,71 +296,70 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 150; background: line
                   <img src="assets/hulu_logo.png" alt="Hulu">
                 </div>
                 <div class="other-price">$75 <span>/ year</span></div>
-                <a href="https://wa.me/1234567890?text=Hi!%20I%20want%20the%20Family%20Movie%20Night%20bundle." class="btn-outline" target="_blank">Order via WhatsApp</a>
+                <a href="https://wa.me/212698179490?text=Hi!%20I%20want%20the%20Family%20Movie%20Night%20bundle." class="btn-outline" target="_blank">Order via WhatsApp</a>
+              </div>
+            </div>
+          </div>
+          <div class="other-card custom-card">
+            <div class="other-card-mosaic-wrap">
+              <img src="custom.png" alt="Build Your Own Bundle" class="other-card-canvas">
+              <div class="banner-top-bar">
+                <div class="bundle-title">Build Your Own</div>
+                <div class="bundle-desc">Mix and match 15+ premium services to craft your perfect streaming arsenal.</div>
+              </div>
+              <div class="other-card-overlay">
+                <div style="font-size: 2.5rem; margin-bottom: 12px; line-height: 1; text-align: center;">🛠️</div>
+                <a href="#" class="btn-outline" onclick="openBuilder(); return false;" style="background: var(--red); border-color: var(--red);">Start Building</a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="slide-arrow" onclick="goToSlide(2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>Build Your Own</div>
+      <div class="slide-arrow" onclick="openBuilder()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>Build Your Own</div>
     </div>
 
-    <!-- SLIDE 3: BUILDER -->
-    <div class="slide" id="slide-builder">
-      <div class="slide-content">
-        <div class="section-label">Architecture</div>
-        <div class="section-title">Build Your Custom Matrix</div>
-        <div class="builder-wrap">
-          <div class="builder-left">
-            <div class="builder-label">1. Lock In Duration</div>
-            <div class="dur-btns">
-              <button class="dur-btn" data-dur="6">6 Months</button>
-              <button class="dur-btn active" data-dur="12">1 Year</button>
-            </div>
-            <div class="builder-label">2. Stack Your Arsenal</div>
-            <div class="svc-list" id="builder-list"></div>
-            <div class="custom-req">
-              <div class="builder-label" style="margin-bottom:4px;margin-top:8px;">You can't see it here? We probably have it too!</div>
-              <input type="text" id="custom-input" placeholder="Type another product... (e.g. HBO Max, Paramount+)">
-            </div>
-          </div>
-          <div class="builder-right">
-            <div class="builder-label">3. Summary Engine</div>
-            <div class="loyalty-builder-row" id="builder-loyalty-row">
-              <input type="checkbox" id="builder-loyalty">
-              <label class="loyalty-builder-label" for="builder-loyalty">⭐ Regular Customer — 20% loyalty discount</label>
-            </div>
-            <div class="summary-box" id="summary-output">
-              <div style="color:var(--muted);text-align:center;">Select services to calculate pricing.</div>
-            </div>
-            <a id="btn-custom-wa" href="#" class="btn-wa" target="_blank" style="pointer-events:none;opacity:0.5;">Lock In Your Bundle</a>
-          </div>
+  </div>
+</div>
+
+<!-- BUILDER OVERLAY -->
+<div id="builder-overlay" class="overlay-page">
+  <button class="close-builder" onclick="closeBuilder()">✕</button>
+  <div id="combo-banner" class="combo-banner"></div>
+  <div class="slide-content" style="max-width:1000px;width:100%;">
+    <div class="section-label">Architecture</div>
+    <div class="section-title">Build Your Custom Matrix</div>
+    <div class="builder-wrap">
+      <div class="builder-left">
+        <div class="builder-label">1. Lock In Duration</div>
+        <div class="dur-btns">
+          <button class="dur-btn" data-dur="6">6 Months</button>
+          <button class="dur-btn active" data-dur="12">1 Year</button>
+        </div>
+        <div class="builder-label">2. Stack Your Arsenal</div>
+        <div class="svc-list" id="builder-list"></div>
+        <div class="custom-req">
+          <div class="builder-label" style="margin-bottom:4px;margin-top:8px;">You can't see it here? We probably have it too!</div>
+          <input type="text" id="custom-input" placeholder="Type another product... (e.g. HBO Max, Paramount+)">
         </div>
       </div>
-      <div class="slide-arrow" onclick="goToSlide(3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>See Reviews</div>
-    </div>
-
-
-    <!-- SLIDE 4: TESTIMONIALS -->
-    <div class="slide" id="slide-testi">
-      <div class="slide-content">
-        <div class="section-label">Proven Setup</div>
-        <div class="section-title">Verified Buyers</div>
-        <div class="testi-grid">
-          <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">"Cancelled my $120 cable bill instantly. Set up took 5 mins via WhatsApp. Perfect stream quality on DirecTV."</p><div class="testi-author">M. Rodriguez, FL</div></div>
-          <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">"Skeptical at first, but the $62/year bundle works flawlessly. ViX and Fubo are loaded."</p><div class="testi-author">Tyler K., TX</div></div>
-          <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">"Bought this for my parents. The UI is simple, and support walked them right through it."</p><div class="testi-author">Daniel J., IL</div></div>
+      <div class="builder-right">
+        <div class="builder-label">3. Summary Engine</div>
+        <div class="loyalty-builder-row" id="builder-loyalty-row">
+          <input type="checkbox" id="builder-loyalty">
+          <label class="loyalty-builder-label" for="builder-loyalty">⭐ Regular Customer — 20% loyalty discount</label>
         </div>
+        <div class="summary-box" id="summary-output">
+          <div style="color:var(--muted);text-align:center;">Select services to calculate pricing.</div>
+        </div>
+        <a id="btn-custom-wa" href="#" class="btn-wa" target="_blank" style="pointer-events:none;opacity:0.5;">Lock In Your Bundle</a>
       </div>
     </div>
-
-
   </div>
 </div>
 
 <script>
 /* ═══ SLIDE NAVIGATION ═══ */
-let currentSlide = 0; const TOTAL = 4;
+let currentSlide = 0; const TOTAL = 3;
 const track = document.getElementById('slides-track');
 const dots  = document.querySelectorAll('.dot');
 let isAnim  = false;
@@ -338,17 +378,61 @@ function scrollableAncestor(el) {
   }
   return null;
 }
+let scrollAccum = 0;
 window.addEventListener('wheel', e => {
-  if (scrollableAncestor(e.target)) return;
+  if(document.getElementById('builder-overlay').classList.contains('open')) return;
+  const sa = scrollableAncestor(e.target);
+  if (sa) {
+    const atTop = sa.scrollTop <= 0;
+    const atBottom = Math.abs(sa.scrollHeight - sa.scrollTop - sa.clientHeight) < 2;
+    if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
+      scrollAccum += e.deltaY;
+      if (Math.abs(scrollAccum) > 150) {
+        if (!isAnim) goToSlide(e.deltaY > 0 ? currentSlide+1 : currentSlide-1);
+        scrollAccum = 0;
+      }
+    } else { scrollAccum = 0; }
+    return;
+  }
+  scrollAccum = 0;
   if (!isAnim) goToSlide(e.deltaY > 0 ? currentSlide+1 : currentSlide-1);
 }, {passive:true});
-let ts = 0;
-window.addEventListener('touchstart', e => ts = e.touches[0].clientY, {passive:true});
+
+let ts = 0, touchAccum = 0;
+window.addEventListener('touchstart', e => { ts = e.touches[0].clientY; touchAccum=0; }, {passive:true});
+window.addEventListener('touchmove', e => {
+  if(document.getElementById('builder-overlay').classList.contains('open')) return;
+  const sa = scrollableAncestor(e.target);
+  if(sa) {
+    const atTop = sa.scrollTop <= 0;
+    const atBottom = Math.abs(sa.scrollHeight - sa.scrollTop - sa.clientHeight) < 2;
+    const diff = ts - e.touches[0].clientY;
+    if ((atTop && diff < 0) || (atBottom && diff > 0)) {
+       touchAccum += diff;
+    } else { touchAccum = 0; ts = e.touches[0].clientY; }
+  }
+}, {passive:true});
 window.addEventListener('touchend', e => {
-  if (scrollableAncestor(e.target)) return;
+  if(document.getElementById('builder-overlay').classList.contains('open')) return;
+  const sa = scrollableAncestor(e.target);
   const diff = ts - e.changedTouches[0].clientY;
+  if (sa) {
+    if (Math.abs(touchAccum) > 80) {
+      if (!isAnim) goToSlide(touchAccum > 0 ? currentSlide+1 : currentSlide-1);
+    }
+    return;
+  }
   if (!isAnim && Math.abs(diff) > 40) goToSlide(diff > 0 ? currentSlide+1 : currentSlide-1);
 }, {passive:true});
+
+function openBuilder() { 
+  document.getElementById('builder-overlay').classList.add('open'); 
+  document.querySelector('.nav-cta').style.display = 'none';
+}
+function closeBuilder() { 
+  document.getElementById('builder-overlay').classList.remove('open'); 
+  document.querySelector('.nav-cta').style.display = 'block';
+}
 
 /* ═══ ASSETS (local files) ═══ */
 const ASSETS = {
@@ -479,6 +563,72 @@ function handleBuilderLoyalty() {
 let activeDur = 12;
 let selected  = new Set();
 
+const COMBOS = [
+  { name: 'The Classic Bundle', items: ['Netflix', 'ViX', 'DirecTV', 'Fubo TV'], img: 'main.png' },
+  { name: 'Family Night Bundle', items: ['Disney', 'Apple TV', 'Hulu'], img: 'movies.png' },
+  { name: 'Sports MAD Bundle', items: ['ESPN', 'DirecTV', 'Fubo TV'], img: 'sports.png' }
+];
+
+function checkCombos() {
+  let matched = null;
+  for(let c of COMBOS) {
+    if(c.items.length === selected.size && c.items.every(i => selected.has(i))) {
+      matched = c; break;
+    }
+  }
+  const banner = document.getElementById('combo-banner');
+  if(matched) {
+    banner.innerHTML = `
+      <div class="combo-info">
+        <span>Combo Unlocked!</span>
+        ${matched.name}
+      </div>
+      <div class="combo-trailer">
+        <img src="${matched.img}" alt="Trailer">
+      </div>
+    `;
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
+  }
+}
+
+function getCartTotal(selSet) {
+  let items = Array.from(selSet).map(k=>({name:k, price:DB[k]['p'+activeDur]}));
+  items.sort((a,b)=>b.price-a.price);
+  let total = 0;
+  items.forEach((item, i) => {
+    let dm = 1;
+    if(i===1) dm=0.60; else if(i===2) dm=0.40; else if(i===3) dm=0.20; else if(i>=4) dm=0.15;
+    total += item.price * dm;
+  });
+  return total;
+}
+
+function updateListPrices() {
+  const currentTotal = getCartTotal(selected);
+
+  document.querySelectorAll('.svc-item').forEach(el => {
+    const name = el.querySelector('.svc-name').innerText;
+    const priceEl = el.querySelector('.svc-price');
+    
+    if (selected.has(name)) {
+      priceEl.innerText = 'Added ✓';
+      priceEl.style.color = 'var(--green)';
+    } else {
+      const testSet = new Set(selected);
+      testSet.add(name);
+      const newTotal = getCartTotal(testSet);
+      const diff = newTotal - currentTotal;
+      priceEl.innerText = '+$' + diff.toFixed(2);
+      priceEl.style.color = 'var(--muted)';
+      priceEl.classList.remove('price-pop');
+      void priceEl.offsetWidth; // trigger reflow
+      priceEl.classList.add('price-pop');
+    }
+  });
+}
+
 function initBuilder() {
   const list = document.getElementById('builder-list');
   Object.keys(DB).sort().forEach(k => {
@@ -506,10 +656,6 @@ function initBuilder() {
       document.querySelectorAll('.dur-btn').forEach(b=>b.classList.remove('active'));
       e.target.classList.add('active');
       activeDur = parseInt(e.target.dataset.dur);
-      document.querySelectorAll('.svc-item').forEach(el => {
-        const name = el.querySelector('.svc-name').innerText;
-        el.querySelector('.svc-price').innerText = '$'+DB[name]['p'+activeDur];
-      });
       calc();
     };
   });
@@ -525,6 +671,8 @@ function initBuilder() {
 }
 
 function calc() {
+  updateListPrices();
+  checkCombos();
   const out = document.getElementById('summary-output');
   const btn = document.getElementById('btn-custom-wa');
   const customStr = document.getElementById('custom-input').value.trim();
@@ -558,7 +706,7 @@ function calc() {
   if(customStr) msg+=`, plus: ${customStr}`;
   if(loyalOn) msg+=`\n(Loyalty discount applied)`;
   msg+=`\nTotal: $${total.toFixed(2)}`;
-  btn.href=`https://wa.me/1234567890?text=${encodeURIComponent(msg)}`;
+  btn.href=`https://wa.me/212698179490?text=${encodeURIComponent(msg)}`;
 }
 
 /* ═══ INIT ═══ */

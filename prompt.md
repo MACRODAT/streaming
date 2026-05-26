@@ -1,5 +1,5 @@
 
-
+	Path: D:\ai\streaming
 	Read index.html
 
 	# Context
@@ -17,6 +17,21 @@
 	Add transitions and animations.
 
 	# Task
+	- fix the scrolling / page carousel behavior, so that scrolling up and down anywhere triggers the previous / next component, EXCEPT for custom bundle which looks like another page / full screen app with close (return) button with slightly different background => access there with animation! . This should include the area of the components, where scrolling aggressively should bring the prev / next component in the page.
+	- Fix the logos in the build bundle items below build your arsenal (width of the icon should be dependent on the service icon, without stretching or wrapping).
+	- when switching between 6 months / 1 year, show animations (beautiful) in the prices list
+	- When selecting one item in the bundler, the next is sold with reduction (it is already done). Ensure you update the prices of the items depending on how much they would cost (in  difference) based on the selected bundle.
+	- When selecting items from the:
+    	- classic bundle: Netflix, ViX, DirectV, Fubo Tv, 
+    	- Family Night: Disney, Apple TV, hulu
+    	- Sports MAD: ESPN, DIRECTV, Fubo
+    	- ensure you say to the user that this is the classic / movies / sports bundle with a pretty animation (show even the trailer for the bundle, in smaller preview)
+  	- Fix the header (fixed) so that there is this beautiful spotlight in RED/ORANGE that changes sometimes color with animations and which adds a bit to the opacity so the header feels "higher" that the content.
+  	- Fix the number for whatsapp: +212698179490
+  	- Do not modify the intents and features and theme of the app
+  	- Theme: Netflix inspired!
+
+
 	- In the bundles, replace names with their logos.
 	- for each bundle, Fix the canvas in the form of four triangles (if there are four products or up to the number of products) that make rectangle that fits with backgrounds of the products themes and their logos. Add a plus in between to show they are bundled together.
 	- Modify pricing and products to this matrix:
